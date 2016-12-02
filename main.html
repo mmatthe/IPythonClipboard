@@ -1,0 +1,43 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Copy marked text to IPython</title>
+    <script src="3rdparty/jquery-3.1.1.min.js"></script>
+    <script src="js/api.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+      }
+      #status {
+        /* avoid an excessively wide status text */
+        white-space: pre;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 400px;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="main">
+      <p id="code">
+X = np.array(10)<br>
+Y = np.sin(X)<br>
+plt.plot(X, Y)<br>
+      </p>
+      <div id="status"></div>
+      <label for="filename">Notebook name</label><br />
+      <input id="filename" value="blatext"></input><br />
+      <button id="createfile">Copy Selection to Notebook</button><br />
+      <button id="readfile">Copy Notebook to clipboard</button>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
