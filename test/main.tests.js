@@ -42,7 +42,15 @@ describe('IPythonAPI', function() {
 	    args.url.should.equal("http://localhost:8888/api/contents/newNB.ipynb");
 	    var contents = JSON.parse(args.data);
 	    contents.type.should.equal("notebook");
-	    contents.content.cells[0].source.should.equal("# Contents of Cell1");
+
+	    var cell0 = contents.content.cells[0];
+	    cell0.source.should.equal("# Contents of Cell1");
+	    cell0.cell_type.should.equal("code");
+
+	    var cell1 = contents.content.cells[1];
+	    cell1.source.should.equal("# Contents of Cell2");
+	    cell1.cell_type.should.equal("code");
+
 	    done();
 	});
     });
