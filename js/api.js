@@ -18,6 +18,11 @@ class IPythonAPI {
 
 	this.__baseNBContent = {'nbformat': 4, 'metadata': {'language_info': {'nbconvert_exporter': 'python', 'version': '3.5.1', 'mimetype': 'text/x-python', 'file_extension': '.py', 'codemirror_mode': {'version': 3, 'name': 'ipython'}, 'name': 'python', 'pygments_lexer': 'ipython3'}, 'kernelspec': {'display_name': 'Python 3', 'language': 'python', 'name': 'python3'}}, 'cells': [], 'nbformat_minor': 0};
 	this.__baseNBCell = {"source": "", "metadata": {"collapsed": true, "trusted": true}, "outputs": [], "execution_count": null, "cell_type": "code"};
+
+	this.STATUS_OK = 1;
+	this.STATUS_MAYBE_ACAO = -1;
+	this.STATUS_MAYBE_NOTUP = -2;
+	this.STATUS_UNKNOWN = -10;
     }
 
     _contentURL(path) {
@@ -70,14 +75,21 @@ class IPythonAPI {
     }
 
     checkConnectivity(callback) {
+	var obj = this;
 	$.get({url: this._contentURL("thisfiledoesnotexist.ipynb"),
 	       timeout: 1000,
 	       success: function(response) {
 	       	   callback({status: true, message: "File found"});
 	       },
 	       error: function(response) {
-		   var status = response.status != 0;
-		   callback({status: status});
+		   if (response.status == 404)
+		       callback({status: obj.STATUS_OK});
+		   else if(response.statusText == 'error')
+		       callback({status: obj.STATUS_MAYBE_ACAO});
+		   else if(response.statusText == 'timeout')
+		       callback({status: obj.STATUS_MAYBE_NOTUP});
+		   else
+		       callback({status: obj.STATUS_UNKNOWN});
 	       }});
     }
 }

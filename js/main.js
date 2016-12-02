@@ -34,6 +34,18 @@ var showStatus = function(msg) {
     $("#status").text(msg);
 }
 
+var checkConnectivity = function() {
+    var msg = {};
+    msg[api.STATUS_OK] = "Connection to server is available!";
+    msg[api.STATUS_MAYBE_ACAO] = "You have Access-Control problems!";
+    msg[api.STATUS_MAYBE_NOTUP] = "Your Notebook does not respond!";
+    msg[api.STATUS_UNKNOWN] = "Unknown server status";
+
+    api.checkConnectivity(function(status) {
+	showStatus(msg[status.status]);
+    });
+}
+
 var api = new IPythonAPI("localhost", 8888);
 $(function() {
     $("#createfile").click(function() {
@@ -46,4 +58,6 @@ $(function() {
 
     if(chrome.tabs !== undefined)
 	$("#code").remove();
+
+    checkConnectivity();
 });

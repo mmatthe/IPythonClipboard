@@ -72,10 +72,8 @@ describe('IPythonAPI', function() {
 	});
 
 	it("returns OK, if server responds 404", function(done) {
-	    done();
-	    return;
 	    api.checkConnectivity(function(status) {
-		assert(status.status);
+		status.status.should.equal(api.STATUS_OK);
 		done();
 	    });
 	    server.requests[0].respond(404);
@@ -84,12 +82,11 @@ describe('IPythonAPI', function() {
 	it("returns False, if server does not response", function(done) {
 	    var clock = sinon.useFakeTimers();
 	    api.checkConnectivity(function(status) {
-		assert(!status.status);
+		status.status.should.equal(api.STATUS_MAYBE_NOTUP);
 		done();
 	    });
 	    // no response from server
 	    clock.tick(100000);
-
 	});
     });
 });
