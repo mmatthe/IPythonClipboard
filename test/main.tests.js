@@ -54,4 +54,42 @@ describe('IPythonAPI', function() {
 	    done();
 	});
     });
+
+    describe("#connectivityTest", function() {
+	describe("asks a bogus site to check for server responding", function() {
+	    before(function() {
+		sinon.stub(jQuery, "ajax");
+	    });
+	    after(function() {
+		jQuery.ajax.restore();
+	    });
+
+	    it("runs", function(done) {
+		api.checkConnectivity($.noop);
+		jQuery.ajax.callCount.should.equal(1);
+		done();
+	    });
+	});
+
+	it("returns OK, if server responds 404", function(done) {
+	    done();
+	    return;
+	    api.checkConnectivity(function(status) {
+		assert(status.status);
+		done();
+	    });
+	    server.requests[0].respond(404);
+	});
+
+	it("returns False, if server does not response", function(done) {
+	    var clock = sinon.useFakeTimers();
+	    api.checkConnectivity(function(status) {
+		assert(!status.status);
+		done();
+	    });
+	    // no response from server
+	    clock.tick(100000);
+
+	});
+    });
 });

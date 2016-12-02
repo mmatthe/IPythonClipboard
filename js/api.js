@@ -68,4 +68,16 @@ class IPythonAPI {
 		}
 	       });
     }
+
+    checkConnectivity(callback) {
+	$.get({url: this._contentURL("thisfiledoesnotexist.ipynb"),
+	       timeout: 1000,
+	       success: function(response) {
+	       	   callback({status: true, message: "File found"});
+	       },
+	       error: function(response) {
+		   var status = response.status != 0;
+		   callback({status: status});
+	       }});
+    }
 }

@@ -22,7 +22,6 @@ var createNotebook = function() {
 			   [selection.toString()],
 			   function(response) {
 			       showStatus("Notebook {0} saved at {1}".format(response.name, response.last_modified));
-			       console.log(response);
 	});
     });
 }
