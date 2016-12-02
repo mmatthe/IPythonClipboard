@@ -93,3 +93,17 @@ class IPythonAPI {
 	       }});
     }
 }
+
+var getLatestCell = function(contents) {
+    var cells = contents.content.cells;
+    cells.sort(function(a, b) {
+	return a.execution_count < b.execution_count;
+    });
+    return cells[0];
+}
+
+var getCellContent = function(cell) {
+    result = {};
+    result['input'] = cell.source;
+    return result;
+}

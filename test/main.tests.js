@@ -9,6 +9,9 @@ describe('IPythonAPI', function() {
 	server = sinon.fakeServer.create();
 	api = new IPythonAPI("localhost", 8888);
     });
+    afterEach(function() {
+	server.restore();
+    });
 
     describe('#URL and content tests', function() {
 	beforeEach(function() {
@@ -87,6 +90,30 @@ describe('IPythonAPI', function() {
 	    });
 	    // no response from server
 	    clock.tick(100000);
+	});
+    });
+});
+
+describe("NotebookFunctions", function() {
+    describe("#getLatestCell", function() {
+	it("returns the JSON for the last executed cell", function(done) {
+	    $.get("data/getNB-contents.json", function(response) {
+		var cell = getLatestCell(JSON.parse(response));
+		cell.execution_count.should.equal(19);
+		done();
+	    });
+	});
+    });
+
+    describe("#CellContents", function() {
+	it("returns the input and output of a given cell", function(done) {
+	    $.get("data/getNB-contents.json", function(response) {
+		var all = JSON.parse(response);
+		var cell = all.content.cells[0];
+		var contents = getCellContent(cell);
+		contents.input.should.equal("import requests\nimport json");
+		done();
+	    });
 	});
     });
 });
