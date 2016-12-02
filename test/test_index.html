@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mocha</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.1.2/mocha.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.min.js"></script>
+
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.0.3/vue-resource.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sinon.js/1.15.4/sinon.js"></script>
+
+    <script>mocha.setup('bdd');</script>
+    <script>
+     "use strict";
+     var assert = chai.assert;
+     var should = chai.should();
+
+     var vm = new Vue({
+	 data: {
+	     message: "Hello"
+	 },
+
+	 methods: {
+	     loadMessage: function() {
+		 this.$http.get("/get").then(
+		     function(value) {
+			 this.message = value.body.message;
+		     });
+	     },
+	 }
+     });
+     describe('getMessage', function() {
+	 let server;
+	 beforeEach(function () {
+	     server = sinon.fakeServer.create();
+	 });
+
+	 it("should get the message", function() {
+	     server.respondImmediately = true;
+	     server.respondWith([200, { 'Content-Type': 'application/json' },
+				 JSON.stringify({message: "Test"})]);
+
+	     vm.message.should.equal("Hello");
+	     vm.loadMessage();
+	     /* server.respond(); */
+	     setTimeout(function() {
+		 // This one works, but it's quirky and a possible error does only occur in the console
+		 vm.message.should.equal("Test");
+	     }, 100);
+
+	     // This one doesn't work
+	     vm.message.should.equal("Test");
+	 });
+     });
+    </script>
+    <script>
+      mocha.run();
+    </script>
+  </body>
+</html>
