@@ -15,6 +15,9 @@ class IPythonAPI {
     constructor(host, port) {
 	this.host = host;
 	this.port = port;
+
+	this.__baseNBContent = {'nbformat': 4, 'metadata': {'language_info': {'nbconvert_exporter': 'python', 'version': '3.5.1', 'mimetype': 'text/x-python', 'file_extension': '.py', 'codemirror_mode': {'version': 3, 'name': 'ipython'}, 'name': 'python', 'pygments_lexer': 'ipython3'}, 'kernelspec': {'display_name': 'Python 3', 'language': 'python', 'name': 'python3'}}, 'cells': [], 'nbformat_minor': 0};
+	this.__baseNBCell = {source: "", metadata: {collapsed: true, trusted: true}, outputs: [], execution_count: 1, cell_type: 'code'};
     }
 
     _contentURL(path) {
@@ -33,5 +36,19 @@ class IPythonAPI {
 	$.get(url, function() {
 
 	});
+    }
+
+    createNotebook(filename, cellContents) {
+	var url = this._contentURL(filename);
+	var baseContent = $.extend({}, this.__baseNBContent);
+	baseContent.cells = $.map(cellContents, function(cellSource) {
+	    return $.extend({}, self.__baseNBCell, {source: cellSource});
+	});
+	$.ajax({url: url,
+		type: "PUT",
+		data: JSON.stringify({type: "notebook", content: baseContent}),
+	       });
+
+
     }
 }
