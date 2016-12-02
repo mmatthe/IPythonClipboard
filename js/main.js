@@ -18,8 +18,9 @@ var createNotebook = function() {
 	    return;
 	}
 
+	var firstCell = "%matplotlib inline\nimport numpy as np\nimport matplotlib.pyplot as plt\n";
 	api.createNotebook("newNB.ipynb",
-			   [selection.toString()],
+			   [firstCell, selection.toString()],
 			   function(response) {
 			       showStatus("Notebook {0} saved at {1}".format(response.name, response.last_modified));
 	});
