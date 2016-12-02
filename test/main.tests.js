@@ -116,4 +116,12 @@ describe("NotebookFunctions", function() {
 	    });
 	});
     });
+
+    describe("#formatCell", function() {
+	it("indents input", function() {
+	    var cell = {input: "this is the input\n", output: []};
+	    var formatted = formatCell(cell);
+	    formatted.should.equal("\n    this is the input\n\n");
+	});
+    });
 });

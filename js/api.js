@@ -107,3 +107,12 @@ var getCellContent = function(cell) {
     result['input'] = cell.source;
     return result;
 }
+
+var formatCell = function(cell) {
+    var indentPart = function(part) {
+	var result = part.trim().replace("\n", "    \n");
+	result = "\n    " + result + "\n\n";
+	return result;
+    };
+    return indentPart(cell.input);
+}
