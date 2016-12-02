@@ -17,9 +17,21 @@ class IPythonAPI {
 	this.port = port;
     }
 
+    _contentURL(path) {
+	var url = "http://{0}:{1}/api/contents/{2}".format(this.host, this.port, path);
+	return url;
+    }
+
     listContents(directory) {
-	var url = "http://{0}:{1}/api/contents{2}".format(this.host, this.port, directory);
+	var url = this._contentURL(directory);
 	$.get(url, function() {
+	});
+    }
+
+    getFile(filename) {
+	var url = this._contentURL(filename);
+	$.get(url, function() {
+
 	});
     }
 }
