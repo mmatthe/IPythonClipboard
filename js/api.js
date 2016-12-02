@@ -25,20 +25,32 @@ class IPythonAPI {
 	return url;
     }
 
-    listContents(directory) {
+    listContents(directory, callback) {
 	var url = this._contentURL(directory);
-	$.get(url, function() {
-	});
+	$.get({url: url,
+	       success: function(xhr) {
+		   callback(xhr);
+	       },
+	       error: function(xhr) {
+		   callback(xhr);
+	       }
+	      });
     }
 
-    getFile(filename) {
+    getFile(filename, callback) {
 	var url = this._contentURL(filename);
-	$.get(url, function() {
+	$.get({url: url,
+	       success: function(xhr) {
+		   callback(xhr);
+	       },
+	       error: function(xhr) {
+		   callback(xhr);
+	       }
+	      });
 
-	});
     }
 
-    createNotebook(filename, cellContents) {
+    createNotebook(filename, cellContents, callback) {
 	var url = this._contentURL(filename);
 	var baseContent = $.extend({}, this.__baseNBContent);
 	baseContent.cells = $.map(cellContents, function(cellSource) {
@@ -47,8 +59,12 @@ class IPythonAPI {
 	$.ajax({url: url,
 		type: "PUT",
 		data: JSON.stringify({type: "notebook", content: baseContent}),
+		success: function(xhr) {
+		    callback(xhr);
+		},
+		error: function(xhr) {
+		    callback(xhr);
+		}
 	       });
-
-
     }
 }
