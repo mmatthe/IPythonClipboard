@@ -11,6 +11,8 @@
     },
     "permissions": [
 	"activeTab",
-	"http://localhost/"
-    ]
+	"http://localhost/",
+        "clipboardWrite",
+        "clipboardRead"
+	]
 }

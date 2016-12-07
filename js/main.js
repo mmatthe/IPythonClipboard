@@ -27,9 +27,13 @@ var createNotebook = function() {
     });
 }
 
-
-var readNotebook = function() {
-    showStatus("Not yet Implemented");
+var readNotebook = function(e) {
+    api.getFile("newNB.ipynb", function(response) {
+	var latest = getCellContent(getLatestCell(response));
+	var formatted = formatCell(latest);
+	$("#content").text(formatted);
+	showStatus("Formatted cell output copied to textarea!");
+    });
 }
 
 var showStatus = function(msg) {
@@ -54,9 +58,11 @@ $(function() {
 	createNotebook();
     });
 
-    $("#readfile").click(function() {
-	readNotebook();
+    $("#readfile").click(function(e) {
+	readNotebook(e);
     });
+    new Clipboard(".copy");
+
 
     if(chrome.tabs !== undefined)
 	$("#code").remove();

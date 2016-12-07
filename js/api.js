@@ -52,7 +52,6 @@ class IPythonAPI {
 		   callback(xhr);
 	       }
 	      });
-
     }
 
     createNotebook(filename, cellContents, callback) {
@@ -110,7 +109,7 @@ var getCellContent = function(cell) {
 
 var formatCell = function(cell) {
     var indentPart = function(part) {
-	var result = part.trim().replace("\n", "    \n");
+	var result = part.trim().replace("\n", "\n    ");
 	result = "\n    " + result + "\n\n";
 	return result;
     };

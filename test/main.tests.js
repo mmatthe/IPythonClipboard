@@ -119,9 +119,9 @@ describe("NotebookFunctions", function() {
 
     describe("#formatCell", function() {
 	it("indents input", function() {
-	    var cell = {input: "this is the input\n", output: []};
+	    var cell = {input: "this is line1\nthis is line2\n", output: []};
 	    var formatted = formatCell(cell);
-	    formatted.should.equal("\n    this is the input\n\n");
+	    formatted.should.equal("\n    this is line1\n    this is line2\n\n");
 	});
     });
 });
