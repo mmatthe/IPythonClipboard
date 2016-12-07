@@ -94,11 +94,18 @@ describe('IPythonAPI', function() {
     });
 });
 
+var parseJSONIfNecessary = function (arg) {
+    if (typeof(arg) == 'object')
+	return arg
+    else
+	return JSON.parse(arg)
+}
+
 describe("NotebookFunctions", function() {
     describe("#getLatestCell", function() {
 	it("returns the JSON for the last executed cell", function(done) {
 	    $.get("data/getNB-contents.json", function(response) {
-		var cell = getLatestCell(JSON.parse(response));
+		var cell = getLatestCell(parseJSONIfNecessary(response));
 		cell.execution_count.should.equal(19);
 		done();
 	    });
@@ -108,7 +115,7 @@ describe("NotebookFunctions", function() {
     describe("#CellContents", function() {
 	it("returns the input and output of a given cell", function(done) {
 	    $.get("data/getNB-contents.json", function(response) {
-		var all = JSON.parse(response);
+		var all = parseJSONIfNecessary(response);
 		var cell = all.content.cells[0];
 		var contents = getCellContent(cell);
 		contents.input.should.equal("import requests\nimport json");
