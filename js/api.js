@@ -104,14 +104,37 @@ var getLatestCell = function(contents) {
 var getCellContent = function(cell) {
     result = {};
     result['input'] = cell.source;
+    result['outputs'] = cell.outputs;
     return result;
 }
 
 var formatCell = function(cell) {
-    var indentPart = function(part) {
+    var indentInput = function(part) {
 	var result = part.trim().replace(/\n/g, "\n    ");
 	result = "\n    " + result + "\n\n";
 	return result;
     };
-    return indentPart(cell.input);
+
+    var indentOutputs = function(outputs) {
+	var indented = outputs.map(function(output) {
+	    return output.text.trim().split("\n").map(function(line) {
+		return "    " + line;
+	    }).join("\n");
+	}).join("");
+	if (indented)
+            return "\n\n" + indented + "\n\n";
+	else
+	    return null;
+    };
+
+
+
+    var input = indentInput(cell.input);
+    var output = indentOutputs(cell.outputs);
+    if (output)
+	return input + "Program output:" + output;
+    else
+	return input;
+
+
 }

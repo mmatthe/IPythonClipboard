@@ -126,25 +126,29 @@ describe("NotebookFunctions", function() {
     });
 
     describe("#formatCell", function() {
-	function testFormat(input, output) {
-	    var cell = {input: input, output: []};
-	    var formatted = formatCell(cell);
-	    formatted.should.equal(output);
+	function testFormat(input, expected) {
+	    var formatted = formatCell(input);
+	    formatted.should.equal(expected);
 
 	}
 	it("indents input_with trailing newline", function() {
-	    testFormat("this is line1\nthis is line2\n",
+	    testFormat({input: "this is line1\nthis is line2\n", outputs: []},
 		       "\n    this is line1\n    this is line2\n\n");
 	});
 
 	it("indents input_no trailing newline", function() {
-	    testFormat("this is line1\nthis is line2",
+	    testFormat({input: "this is line1\nthis is line2", outputs: []},
 		       "\n    this is line1\n    this is line2\n\n");
 	});
 
 	it("indents input_3 lines", function() {
-	    testFormat("line1\nline2\nline3",
+	    testFormat({input: "line1\nline2\nline3", outputs: []},
 		       "\n    line1\n    line2\n    line3\n\n");
+	});
+
+	it("indents input and output", function() {
+            testFormat({input: "input", outputs: [{text: "output1\noutput2\n"}]},
+		       "\n    input\n\nProgram output:\n\n    output1\n    output2\n\n");
 	});
     });
 });
