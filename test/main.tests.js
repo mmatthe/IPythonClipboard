@@ -1,4 +1,5 @@
 "use strict";
+
 var assert = chai.assert;
 var should = chai.should();
 
@@ -125,10 +126,20 @@ describe("NotebookFunctions", function() {
     });
 
     describe("#formatCell", function() {
-	it("indents input", function() {
-	    var cell = {input: "this is line1\nthis is line2\n", output: []};
+	function testFormat(input, output) {
+	    var cell = {input: input, output: []};
 	    var formatted = formatCell(cell);
-	    formatted.should.equal("\n    this is line1\n    this is line2\n\n");
+	    formatted.should.equal(output);
+
+	}
+	it("indents input_with trailing newline", function() {
+	    testFormat("this is line1\nthis is line2\n",
+		       "\n    this is line1\n    this is line2\n\n");
+	});
+
+	it("indents input_no trailing newline", function() {
+	    testFormat("this is line1\nthis is line2",
+		       "\n    this is line1\n    this is line2\n\n");
 	});
     });
 });
