@@ -141,5 +141,10 @@ describe("NotebookFunctions", function() {
 	    testFormat("this is line1\nthis is line2",
 		       "\n    this is line1\n    this is line2\n\n");
 	});
+
+	it("indents input_3 lines", function() {
+	    testFormat("line1\nline2\nline3",
+		       "\n    line1\n    line2\n    line3\n\n");
+	});
     });
 });
